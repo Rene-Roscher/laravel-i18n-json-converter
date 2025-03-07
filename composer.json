@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ReneRoscher\\LaravelI18nJsonConverter\\": "src/",
+            "ReneRoscher\\LaravelI18nJsonConverter\\": "src/"
         }
     },
     "autoload-dev": {
