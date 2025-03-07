@@ -1,92 +1,71 @@
-# :package_description
+# A Package for Laravel that converts PHP array-based translation files into flattened JSON files, making them compatible with e.g. xiCO2k/laravel-vue-i18n
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/rene-roscher/laravel-i18n-json-converter.svg?style=flat-square)](https://packagist.org/packages/rene-roscher/laravel-i18n-json-converter)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/rene-roscher/laravel-i18n-json-converter/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/rene-roscher/laravel-i18n-json-converter/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/rene-roscher/laravel-i18n-json-converter.svg?style=flat-square)](https://packagist.org/packages/rene-roscher/laravel-i18n-json-converter)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+<img src="https://banners.beyondco.de/Laravel%20Translations%20Converter.png?theme=light&packageManager=composer+require&packageName=rene-roscher%2Flaravel-i18n-json-converter&pattern=architect&style=style_1&description=Converts+PHP+array-based+translation+files+into+flattened+JSON&md=0&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" width="419px" />
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+A Package for Laravel that converts PHP array-based translation files into flattened JSON files, making them compatible with [xiCO2k/laravel-vue-i18n](https://github.com/xiCO2k/laravel-vue-i18n).
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require rene-roscher/laravel-i18n-json-converter
 ```
 
-You can publish and run the migrations with:
+You can convert your PHP array-based translation files into flattened JSON files by running the following command:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+php artisan i18n:convert
 ```
 
-You can publish the config file with:
+## Configure i18n for vue-i18n
 
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
+```javascript
+import { i18nVue } from 'laravel-vue-i18n'
 
-This is the contents of the published config file:
+// Register the i18n plugin like this
+// Tested with Vue 3 (Inertia) and Vite 4
+// You need to add the locales manually to the switch, dynamic loading is not supported yet
+app.use(i18nVue, {
+    resolve: async (lang) => {
+        const langFiles = import.meta.glob('../lang/*.json', { eager: true })
 
-```php
-return [
-];
-```
+        let modules
+        switch (lang) {
+            case 'en':
+                modules = import.meta.glob('../lang/json/en/*.json', { eager: true })
+                break
+            case 'de':
+                modules = import.meta.glob('../lang/json/de/*.json', { eager: true })
+                break
+        }
 
-Optionally, you can publish the views using
+        const messages = langFiles[`../lang/${lang}.json`] || {}
 
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
+        for (const path in modules) {
+            const regex = new RegExp(`../lang/json/${lang}/(.+)\\.json$`)
+            const match = path.match(regex)
+            if (match) {
+                const prefix = match[1]
+                const moduleMessages = modules[path].default
+                for (const key in moduleMessages) {
+                    messages.default[`${prefix}.${key}`] = moduleMessages[key]
+                }
+            }
+        }
 
-## Usage
-
-```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
-```
-
-## Testing
-
-```bash
-composer test
+        return messages
+    }
+})
 ```
 
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
 
 ## License
 
