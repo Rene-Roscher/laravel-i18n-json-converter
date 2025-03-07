@@ -1,10 +1,10 @@
+![PVM Banner](assets/img.png)
+
 # A Package for Laravel that converts PHP array-based translation files into flattened JSON files, making them compatible with e.g. xiCO2k/laravel-vue-i18n
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/rene-roscher/laravel-i18n-json-converter.svg?style=flat-square)](https://packagist.org/packages/rene-roscher/laravel-i18n-json-converter)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/rene-roscher/laravel-i18n-json-converter/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/rene-roscher/laravel-i18n-json-converter/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/rene-roscher/laravel-i18n-json-converter.svg?style=flat-square)](https://packagist.org/packages/rene-roscher/laravel-i18n-json-converter)
-
-<img src="https://banners.beyondco.de/Laravel%20Translations%20Converter.png?theme=light&packageManager=composer+require&packageName=rene-roscher%2Flaravel-i18n-json-converter&pattern=architect&style=style_1&description=Converts+PHP+array-based+translation+files+into+flattened+JSON&md=0&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" width="419px" />
 
 A Package for Laravel that converts PHP array-based translation files into flattened JSON files, making them compatible with [xiCO2k/laravel-vue-i18n](https://github.com/xiCO2k/laravel-vue-i18n).
 
