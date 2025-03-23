@@ -21,9 +21,12 @@ class LaravelI18nJsonConverterCommand extends Command
     public function handle()
     {
         $langPath = resource_path('lang');
+        if (!File::exists($langPath)) {
+            $langPath = base_path('lang');
+        }
         $jsonPath = $langPath.'/json';
 
-        if (! File::exists($jsonPath)) {
+        if (!File::exists($jsonPath)) {
             File::makeDirectory($jsonPath, 0755, true);
         }
 
